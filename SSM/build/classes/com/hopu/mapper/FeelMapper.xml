@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hopu.mapper.FeelMapper">
+	
+	<resultMap type="com.hopu.bean.Feel" id="feelmap">
+		<id property="feelid" column="feelid"/>
+		<result property="userid" column="userid"/>
+		<result property="feeltime" column="feeltime"/>
+		<result property="feelcontent" column="feelcontent"/>
+		<result property="type" column="type"/>
+		<association property="user" javaType="com.hopu.bean.User" column="userid">
+			<id property="userid" column="userid"/>
+			<result property="qq" column="qq"/>
+			<result property="username" column="username"/>
+			<result property="headpic" column="headpic"/>
+		</association>
+	</resultMap>
+	
+	<!-- 添加说说 -->
+	<insert id="addFeel">
+		insert into feel(userid,feeltime,feelcontent,type) value 
+		(#{userid},#{feeltime},#{feelcontent},#{type})
+	</insert>
+	<!-- 查询说说 -->
+	<select id="findFeel" resultMap="feelmap">
+		select f.*,u.* from feel as f left join user as u on f.userid = u.userid where f.userid=#{userid} order by feeltime desc
+	</select>
+	
+</mapper>

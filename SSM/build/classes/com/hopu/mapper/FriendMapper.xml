@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hopu.mapper.FriendMapper">
+	<resultMap type="com.hopu.bean.Friend" id="friendmap">
+		<id property="fid" column="fid"/>
+		<result property="userid" column="userid"/>
+		<result property="friendid" column="friendid"/>
+		<result property="addtime" column="addtime"/>
+		<result property="state" column="state"/>
+		<result property="visittime" column="visittime"/>
+		<association property="user" javaType="user">
+			<id property="userid" column="userid"/>
+			<result property="qq" column="qq"/>
+			<result property="username" column="username"/>
+			<result property="headpic" column="headpic"/>
+			<result property="sex" column="sex"/>
+			<result property="ismarry" column="ismarry"/>
+			<result property="birthday" column="birthday"/>
+			<result property="hometown" column="hometown"/>
+			<result property="nowaddress" column="nowaddress"/>
+			<result property="lasttime" column="lasttime"/>
+		</association>
+	</resultMap>
+	<!-- 添加好友 -->
+	<insert id="addFriend">
+		insert into friend (userid,friendid,addtime,state,visittime) value
+		(#{userid},#{friendid},#{addtime},#{state},#{visittime})
+	</insert>
+	<!-- 显示正常好友 -->
+	<select id="findAllF" resultMap="friendmap">
+		
+		 select f.*,u.* from friend as f left join  user as u on f.friendid=u.userid where f.userid=#{userid} and state=#{state}
+ 
+	</select>
+	<!-- 查询好友信息 -->
+	<select id="findFriend" resultMap="friendmap">
+		select f.*,u.* from friend as f left join user as u on f.friendid=u.userid where f.friendid=#{friendid} and f.userid=#{userid}
+	</select>
+	
+	<!-- 删除好友 -->
+	<delete id="deleteFriend">
+		delete from friend where friendid=#{friendid} and userid=#{userid}
+	</delete>
+	
+	<!-- 修改好友状态 -->
+	<update id="updateFriend">
+		update friend
+		<set>
+			<if test="state!=null">state=#{state}</if>
+		</set>
+		where friendid=#{friendid} and userid=#{userid}
+	</update>	
+	
+</mapper>

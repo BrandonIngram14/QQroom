@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hopu.mapper.UserMapper">
+
+	<!-- 添加用户 -->
+	<insert id="addUser">
+		insert into
+		user(username,password,qq,headpic,sex,ismarry,birthday,hometown,nowaddress)
+		value
+		(#{username},#{password},#{qq},#{headpic},#{sex},#{ismarry},#{birthday},#{hometown},#{nowaddress})
+	</insert>
+	<!-- 登录 -->
+	<select id="findUserByQQ" resultType="user">
+		select * from user where qq=#{qq} and password=#{password}
+	</select>
+	<!-- 根据id查询 -->
+	<select id="findUserByid" resultType="user">
+		select * from user where userid=#{userid} 
+	</select>
+	<!-- 修改 -->
+	<update id="update">
+		update user
+		<set>
+			<if test="qq != null">
+				qq = #{qq},
+			</if>
+			<if test="username != null">
+				username = #{username},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="headpic != null">
+				headpic = #{headpic},
+			</if>
+			<if test="sex != null">
+				sex = #{sex},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday},
+			</if>
+			<if test="nowaddress != null">
+				nowaddress = #{nowaddress},
+			</if>
+			<if test="hometown != null">
+				hometown = #{hometown},
+			</if>
+			<if test="ismarry != null">
+				ismarry = #{ismarry},
+			</if>
+			<if test="lasttime != null">
+				lasttime = #{lasttime},
+			</if>
+		</set>
+		where qq = #{qq}
+	</update>
+	<!-- 修改密码 -->
+	<update id="updatepwd">
+		update user
+		<set>
+			<if test="password != null">
+				password = #{password},
+			</if>
+		</set>
+		where qq = #{qq}
+	</update>
+	<!-- 根据qq号查找好友 -->
+	<select id="selectUserByQQ" resultType="user">
+		select * from user where qq=#{qq}
+	</select>
+	<!-- 根据昵称查询好友 -->
+	<select id="selectUserByName" resultType="user">
+		select * from user where username like #{username}
+	</select>
+</mapper>
